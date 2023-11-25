@@ -1,8 +1,12 @@
 package design.singleton;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-public class VehicleSingleton {
+public class VehicleSingleton implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1658537974597528138L;
 	private String color;
 	private String model;
 	private String name;
@@ -11,7 +15,9 @@ public class VehicleSingleton {
 	private static VehicleSingleton vehicleSingleton;// = new VehicleSingleton();
 
 	private VehicleSingleton() {
-
+		// Reflection API can access the private constructor
+		if (vehicleSingleton != null)
+			throw new RuntimeException("Object is already created. Singleton pattern breaks!!");
 	}
 
 	public static VehicleSingleton getInstance() {
@@ -24,6 +30,13 @@ public class VehicleSingleton {
 				}
 			}
 		}
+		return vehicleSingleton;
+	}
+	
+	//Serializable singletoon break solution
+	
+	public Object readResolve() {
+		System.out.println("Read resolve called");
 		return vehicleSingleton;
 	}
 
