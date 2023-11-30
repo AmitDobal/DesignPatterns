@@ -127,4 +127,55 @@ public class MyTree {
 		return Math.max(root.data, Math.max(maxValue(root.left), maxValue(root.right)));
 	}
 
+	// LEFT View
+	public void printLeftView() {
+		Queue<TreeNode> q = new LinkedList<>();
+		q.add(root);
+
+		while (!q.isEmpty()) {
+
+			int count = q.size();
+			for (int i = 0; i < count; i++) {
+				TreeNode curr = q.poll();
+				if (i == 0)
+					System.out.print(curr.data + " ");
+				if (curr.left != null)
+					q.add(curr.left);
+				if (curr.right != null)
+					q.add(curr.right);
+			}
+		}
+	}
+
+	public void printLeftViewRecursive() {
+		printLeftViewRecursiveHelper(root, 1);
+	}
+
+	private int maxLevel = 0;
+
+	private void printLeftViewRecursiveHelper(TreeNode root, int level) {
+		if (root == null)
+			return;
+		if (maxLevel < level) {
+			System.out.print(root.data + " ");
+			maxLevel = level;
+		}
+		printLeftViewRecursiveHelper(root.left, level + 1);
+		printLeftViewRecursiveHelper(root.right, level + 1);
+	}
+
+	public boolean childrenSum(TreeNode root) {
+		if (root != null) {
+			int left = root.left != null ? root.left.data : 0;
+			int right = root.right != null ? root.right.data : 0;
+			if(root.data != (left + right)) {
+				return false;
+			}
+			return childrenSum(root.left) && childrenSum(root.right);
+		}
+		return true;
+	}
+	
+	
+
 }
