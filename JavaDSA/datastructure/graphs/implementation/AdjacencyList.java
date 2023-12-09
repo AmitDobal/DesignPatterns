@@ -32,7 +32,12 @@ public class AdjacencyList {
 		System.out.println(adj);
 		print(adj);
 		bfs(adj, V, 2);
-		bfsDis(adj, V);
+		int ans = bfsDis(adj, V);
+		System.out.println(ans);
+
+		dfs(adj, V, 0);
+		int c = dfsDisc(adj, V);
+		System.out.println(c);
 	}
 
 	static void addEdge(ArrayList<ArrayList<Integer>> adj, int u, int v) {
@@ -72,14 +77,17 @@ public class AdjacencyList {
 		System.out.println();
 	}
 
-	static void bfsDis(ArrayList<ArrayList<Integer>> adj, int V) {
+	static int bfsDis(ArrayList<ArrayList<Integer>> adj, int V) {
 		boolean[] isVisited = new boolean[V];
-
+		int count = 0;
 		for (int i = 0; i < V; i++) {
 			if (isVisited[i] == false) {
 				bfs(adj, V, i, isVisited);
-			}	
+				count++;
+			}
 		}
+		System.out.println();
+		return count;
 	}
 
 	static void bfs(ArrayList<ArrayList<Integer>> adj, int V, int s, boolean[] isVisited) {
@@ -99,4 +107,68 @@ public class AdjacencyList {
 			}
 		}
 	}
+
+	static void dfs(ArrayList<ArrayList<Integer>> adj, int V, int s) {
+
+		System.out.println("Start DFS");
+		boolean[] isVisited = new boolean[V + 1];
+		dfsHelper(adj, V, s, isVisited);
+		System.out.println("\nEnd DFS");
+	}
+
+	static void dfsHelper(ArrayList<ArrayList<Integer>> adj, int V, int s, boolean[] isVisited) {
+		if (isVisited[s])
+			return;
+
+		System.out.print(s + " ");
+		isVisited[s] = true;
+
+		ArrayList<Integer> nodeList = adj.get(s);
+		for (int n : nodeList) {
+			dfsHelper(adj, V, n, isVisited);
+		}
+
+	}
+
+	static int dfsDisc(ArrayList<ArrayList<Integer>> adj, int V) {
+		System.out.println("Start disconnected DFS");
+		boolean[] isVisited = new boolean[V + 1];
+		int count = 0;
+		for (int i = 0; i < V; i++) {
+			if (!isVisited[i]) {
+				dfsHelper(adj, V, i, isVisited);
+				count++;
+			}
+		}
+		System.out.println("\nEnd disconnected DFS");
+		return count;
+	}
+
+	static void shortestPath(ArrayList<ArrayList<Integer>> adj, int s, int V) {
+
+	}
+
+	static int shortestPathBetween(ArrayList<ArrayList<Integer>> adj, int s, int d, int V) {
+		int shortestPath = 0;
+		boolean[] isVisted = new boolean[V + 1];
+		Queue<Integer> q = new LinkedList<>();
+
+		isVisted[s] = true;
+		q.add(s);
+		while (!q.isEmpty()) {
+			int n = q.poll();
+			if (n == d)
+				return shortestPath;
+
+			ArrayList<Integer> children = adj.get(n);
+
+			for (int i = 0; i < children.size(); i++) {
+//				int val = children.
+			}
+
+		}
+
+		return shortestPath;
+	}
+
 }
